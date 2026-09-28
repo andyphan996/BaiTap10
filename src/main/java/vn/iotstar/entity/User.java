@@ -1,15 +1,20 @@
 package vn.iotstar.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +22,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-		@UniqueConstraint(name = "uk_users_username", columnNames = "username"),
-		@UniqueConstraint(name = "uk_users_email", columnNames = "email") })
+@Table(name = "users", indexes = {
+		@Index(name = "idx_users_username", columnList = "username"),
+		@Index(name = "idx_users_email", columnList = "email") })
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,17 +45,23 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@Column(name = "full_name", length = 150, columnDefinition = "nvarchar(200)")
+	@Column(name = "full_name", columnDefinition = "nvarchar(500)")
 	private String fullName;
 
 	@Column(length = 500)
 	private String images;
 
-	@Column(nullable = false)
+	// Tài khoản đăng ký mới chỉ được bật sau khi xác nhận OTP
 	@Builder.Default
-	private boolean enabled = true;
+	@Column(nullable = false)
+	private boolean enabled = false;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
+
+	// 1 user - n product
+	@Builder.Default
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Product> products = new ArrayList<>();
 }

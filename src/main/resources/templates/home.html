@@ -4,18 +4,30 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <head>
-    <title>Trang chủ</title>
+    <title>Dashboard</title>
 </head>
 <body>
 <main layout:fragment="content">
-    <h1>Trang chủ UTEShop</h1>
-    <div class="panel">
-        <p>
-            Xin chào
-            <strong th:text="${#authentication.principal.fullName}">User</strong>
-        </p>
-        <p>Username: <b th:text="${#authentication.principal.username}">user01</b></p>
-        <p>Email: <b th:text="${#authentication.principal.email}">user01@gmail.com</b></p>
+    <h1>Dashboard</h1>
+
+    <p th:if="${#authorization.expression('isAuthenticated()')}">
+        Xin chào <strong th:text="${#authentication.principal.fullName}">User</strong>!
+    </p>
+    <p th:unless="${#authorization.expression('isAuthenticated()')}" class="note">
+        Bạn chưa đăng nhập. <a th:href="@{/login}">Đăng nhập</a> hoặc <a th:href="@{/register}">đăng ký tài khoản</a>.
+    </p>
+
+    <div class="cards">
+        <div class="card"><h3>Tổng số Users</h3><strong th:text="${userCount}">0</strong></div>
+        <div class="card"><h3>Tổng số Products</h3><strong th:text="${productCount}">0</strong></div>
+        <div class="card" th:if="${myProductCount != null}">
+            <h3>Products của bạn</h3><strong th:text="${myProductCount}">0</strong>
+        </div>
+    </div>
+
+    <div class="quick-links" th:if="${#authorization.expression('isAuthenticated()')}">
+        <a class="button" th:href="@{/products}">Quản lý Products</a>
+        <a class="button" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Quản lý Users</a>
     </div>
 </main>
 </body>

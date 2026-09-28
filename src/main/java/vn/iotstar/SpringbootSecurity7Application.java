@@ -19,7 +19,7 @@ public class SpringbootSecurity7Application {
 		SpringApplication.run(SpringbootSecurity7Application.class, args);
 	}
 
-	// Tạo dữ liệu mẫu
+	// Tạo dữ liệu mẫu: 2 role ROLE_USER, ROLE_ADMIN và 2 tài khoản user01, admin
 	@Bean
 	CommandLineRunner init(RoleRepository roleRepository, UserRepository userRepository,
 			PasswordEncoder passwordEncoder,

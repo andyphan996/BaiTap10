@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title layout:title-pattern="$CONTENT_TITLE - IOTSTAR SHOP">IOTSTAR SHOP</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <a class="auth-brand" th:href="@{/}">IOTSTAR SHOP</a>
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+        <div layout:fragment="content"></div>
+    </div>
+</div>
+</body>
+</html>

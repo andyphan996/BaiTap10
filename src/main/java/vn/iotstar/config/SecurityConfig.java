@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,13 +39,21 @@ public class SecurityConfig {
 		return configuration.getAuthenticationManager();
 	}
 
+	// Cần cho maximumSessions: báo cho Spring Security biết khi session bị hủy
+	@Bean
+	public HttpSessionEventPublisher httpSessionEventPublisher() {
+		return new HttpSessionEventPublisher();
+	}
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/uploads/**", "/error",
+				.requestMatchers("/", "/login", "/register", "/verify-otp", "/resend-register-otp",
+						"/forgot-password", "/reset-password", "/css/**", "/js/**", "/images/**", "/error",
 						"/access-denied").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/users/**", "/admin/**").hasRole("ADMIN")
+				.requestMatchers("/products/**").authenticated()
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
@@ -60,6 +69,12 @@ public class SecurityConfig {
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
 				.permitAll()
+			)
+			// Login lưu session: mỗi tài khoản chỉ giữ 1 session, đăng nhập mới sẽ đẩy session cũ ra
+			.sessionManagement(session -> session
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(false)
+				.expiredUrl("/login?expired=true")
 			)
 			.exceptionHandling(ex -> ex.accessDeniedPage("/access-denied"));
 		return http.build();

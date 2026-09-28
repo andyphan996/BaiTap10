@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <body>
-<header th:fragment="header" class="topbar">
-    <div class="brand">
-        <a th:href="@{/}">UTEShop</a>
-    </div>
+<header th:fragment="header" class="header">
+    <a th:href="@{/}" class="brand">IOTSTAR SHOP</a>
 
-    <nav></nav>
+    <nav>
+        <a th:href="@{/}">Dashboard</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Users</a>
+    </nav>
 
     <div class="account" th:if="${#authorization.expression('isAuthenticated()')}">
-        <!-- Avatar -->
         <img class="avatar"
              th:src="@{${#authentication.principal.images != null
                         and !#strings.isEmpty(#authentication.principal.images)
                         ? #authentication.principal.images
                         : '/images/avatar-default.png'}}"
              alt="Avatar" width="40" height="40">
-
-        <!-- Full name -->
-        <strong th:text="${#authentication.principal.fullName}">Nguyễn Văn A</strong>
-
-        <!-- Username -->
-        <span th:text="'(' + ${#authentication.principal.username} + ')'">(nguyenvana)</span>
-
-        <!-- Email -->
-        <span class="muted" th:text="${#authentication.principal.email}">email@gmail.com</span>
-
-        <!-- Role -->
-        <span class="badge" th:text="${#authentication.principal.role}">ROLE_USER</span>
-
-        <!-- Logout -->
+        <div class="who">
+            <strong th:text="${#authentication.principal.fullName}">Nguyễn Văn A</strong>
+            <span class="muted" th:text="${#authentication.principal.username + ' · ' + #authentication.principal.email}">user · email</span>
+        </div>
+        <span class="badge" th:text="${#authentication.principal.role == 'ROLE_ADMIN' ? 'ADMIN' : 'USER'}">USER</span>
         <form th:action="@{/logout}" method="post" style="display:inline">
-            <button class="link-button" type="submit">Đăng xuất</button>
+            <button type="submit" class="link-button">Đăng xuất</button>
         </form>
     </div>
 
     <div class="account" th:unless="${#authorization.expression('isAuthenticated()')}">
-        <a class="link-button" th:href="@{/login}">Đăng nhập</a>
+        <a th:href="@{/login}">Đăng nhập</a>
+        <a th:href="@{/register}">Đăng ký</a>
     </div>
 </header>
 </body>

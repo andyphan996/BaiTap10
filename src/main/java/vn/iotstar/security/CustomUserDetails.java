@@ -2,6 +2,7 @@ package vn.iotstar.security;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,6 +44,10 @@ public class CustomUserDetails implements UserDetails {
 		return List.of(new SimpleGrantedAuthority(role));
 	}
 
+	public boolean isAdmin() {
+		return "ROLE_ADMIN".equals(role);
+	}
+
 	@Override
 	public String getPassword() {
 		return password;
@@ -71,5 +76,16 @@ public class CustomUserDetails implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return enabled;
+	}
+
+	// SessionRegistry dùng principal làm key nên cần equals/hashCode theo username
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof CustomUserDetails other && Objects.equals(username, other.username);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(username);
 	}
 }
