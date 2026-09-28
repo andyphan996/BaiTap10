@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/layout :: head('Dashboard')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container">
+    <h1>Dashboard</h1>
+    <div class="panel">
+        <p>Xin chào quản trị viên <strong sec:authentication="name">admin</strong>.</p>
+        <p>Quyền: <span class="badge" sec:authorize="hasRole('ADMIN')">ADMIN</span></p>
+    </div>
+</main>
+</body>
+</html>
