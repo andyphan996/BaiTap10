@@ -1,28 +1,23 @@
 package vn.iotstar.dto;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserDTO {
 
 	private Long id;
-
-	@Email
-	@NotBlank
+	private String username;
 	private String email;
-
-	@NotBlank
 	private String fullName;
-
-	@NotNull
-	private Long roleId;
-
+	private String images;
 	private String roleName;
 	private boolean enabled;
-	private LocalDateTime createdAt;
 }

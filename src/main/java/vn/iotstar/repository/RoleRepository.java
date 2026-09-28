@@ -8,5 +8,5 @@ import vn.iotstar.entity.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	Optional<Role> findByNameIgnoreCase(String name);
+	Optional<Role> findByName(String name);
 }

@@ -8,12 +8,12 @@ public class AuthController {
 
 	// Phương thức POST /login do Spring Security tự sinh ra.
 	@GetMapping("/login")
-	String login() {
+	public String login() {
 		return "auth/login";
 	}
 
 	@GetMapping("/access-denied")
-	String accessDenied() {
+	public String accessDenied() {
 		return "auth/access-denied";
 	}
 }

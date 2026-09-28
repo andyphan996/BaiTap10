@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layouts/layout :: head('Đăng nhập')}"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
 <body class="auth-page">
-    <div class="auth-card">
-        <h1>IOTSTAR SHOP</h1>
-        <h2>Đăng nhập</h2>
-        <div class="alert error" th:if="${param.error}">Email hoặc mật khẩu không đúng.</div>
-        <div class="alert success" th:if="${param.logout}">Bạn đã đăng xuất.</div>
-        <form th:action="@{/login}" method="post">
-            <label>Email</label>
-            <input type="email" name="email" required autofocus>
-            <label>Mật khẩu</label>
-            <input type="password" name="password" required>
-            <button class="btn primary full mt" type="submit">Đăng nhập</button>
-        </form>
-        <p><a th:href="@{/}">Về trang chủ</a></p>
+<div class="auth-card">
+    <h1>UTEShop</h1>
+    <h2>Đăng nhập</h2>
+
+    <div class="alert error" th:if="${param.error}">
+        Username/email hoặc password không đúng
     </div>
+
+    <div class="alert success" th:if="${param.logout}">
+        Bạn đã đăng xuất
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div>
+            <label>Username hoặc Email</label>
+            <input type="text" name="username" placeholder="Username hoặc email" required autofocus>
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+        <button class="btn primary full mt" type="submit">Đăng nhập</button>
+    </form>
+</div>
 </body>
 </html>
